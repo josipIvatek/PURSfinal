@@ -91,16 +91,16 @@ def scanNUID():
     response = make_response()
     request_body = request.data.decode("utf-8")
     skenirano = json.loads(request_body)
-    print(skenirano)
+    
     g.cursor.execute(render_template('getKarticu.sql', nuid=skenirano['nuid']))
     upit = g.cursor.fetchall()
+    
     if str(upit) == '()':
         return "BAD", 404
     id_kartice = upit[0][0]
     id_korisnika = id_korisnika=skenirano['user_id']
     print(f"kartica: {id_kartice}, Korisnik: {id_korisnika}")
     g.cursor.execute(render_template('addSkenirano.sql', id_kartice=id_kartice, id_korisnika=id_korisnika))
-    print(skenirano)
     
     return response, 200
 
